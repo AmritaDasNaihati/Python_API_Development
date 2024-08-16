@@ -81,3 +81,4 @@ class user_model():
             return res
         else:
             return make_response({"message": "Nothing to update"}, 202)
+

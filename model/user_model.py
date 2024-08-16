@@ -61,3 +61,15 @@ class user_model():
             return make_response({"payload": result}, 200)
         else:
             return make_response({"message": "No data available in that table"}, 204)
+
+    def user_pagination_model(self, limit, page):
+        limit = int(limit)
+        page = int(page)
+        start = (limit * page) - limit
+        qry = f"SELECT * FROM user_table LIMIT {start}, {limit}"
+        self.cur.execute(qry)
+        result = self.cur.fetchall()
+        if len(result) > 0:
+            return make_response({"payload": result, "page_no": page, "limit": limit}, 200)
+        else:
+            return make_response({"message": "No data available in that table"}, 204)

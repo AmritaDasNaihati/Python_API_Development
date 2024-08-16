@@ -1,6 +1,8 @@
 from app import app
 from model.user_model import user_model
 from flask import request
+from datetime import datetime
+
 
 obj = user_model()
 
@@ -33,3 +35,10 @@ def user_updateUserSingleElement_controller(id):
 @app.route("/user/getall/<id>", methods=["GET"])
 def user_getSingleUser_controller(id):
     return obj.user_getSingleUser_model(id)
+
+
+@app.route("/user/getall/limit/<limit>/page/<page>", methods=["GET"])
+def user_pagination_controller(limit, page):
+    return obj.user_pagination_model(limit, page)
+
+

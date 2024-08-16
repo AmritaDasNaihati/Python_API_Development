@@ -2,7 +2,6 @@ import mysql.connector
 import json
 from flask import make_response
 
-
 class user_model():
     def __init__(self):
         try:
@@ -73,3 +72,12 @@ class user_model():
             return make_response({"payload": result, "page_no": page, "limit": limit}, 200)
         else:
             return make_response({"message": "No data available in that table"}, 204)
+
+    def user_upload_avatar_model(self, uid, filepath):
+        self.cur.execute(f"UPDATE user_table SET Avatar='{filepath}' WHERE UserID={uid}")
+        if self.cur.rowcount > 0:
+            res = make_response({"message": "File uploaded successfully"}, 201)
+            res.headers['Access-Control-Allow-Origin'] = "*"
+            return res
+        else:
+            return make_response({"message": "Nothing to update"}, 202)

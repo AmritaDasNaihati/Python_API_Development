@@ -1,6 +1,6 @@
 from app import app
 from model.user_model import user_model
-from flask import request
+from flask import request, send_file
 from datetime import datetime
 
 
@@ -42,3 +42,17 @@ def user_pagination_controller(limit, page):
     return obj.user_pagination_model(limit, page)
 
 
+@app.route("/user/<uid>/upload/Avatar", methods=["PUT"])
+def user_upload_avatar_controller(uid):
+    file = request.files['Avatar']
+    uniqueFileName = str(datetime.now().timestamp()).replace(",", "")
+    fileNameSplit = file.filename.split(".")
+    ext = fileNameSplit[len(fileNameSplit)-1]
+    filepath = f"uploads/{uniqueFileName}.{ext}"
+    file.save(filepath)
+    return obj.user_upload_avatar_model(uid, filepath)
+
+
+@app.route("/uploads/<filename>")
+def user_getAvatar_controller(filename):
+    return send_file(f"uploads/{filename}")
